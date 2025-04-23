@@ -3,7 +3,7 @@ import re
 import streamlit as st
 
 
-def preprocess():
+def preprocess(data):
     # Allow the user to upload a WhatsApp chat file
     uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
 
