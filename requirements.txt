@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+SpeechRecognition
+pyttsx3
+pyaudio
+wordcloud
+emoji
