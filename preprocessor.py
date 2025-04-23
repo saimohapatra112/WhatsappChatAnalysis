@@ -6,72 +6,73 @@ import streamlit as st
 def preprocess():
     # Allow the user to upload a WhatsApp chat file
     uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
-    
+
     if uploaded_file is not None:
         # Read the content of the uploaded file
         data = uploaded_file.read().decode("utf-8")
-        
+
         # Apply the same regex processing
         pattern = r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
         messages = re.split(pattern, data)[1:]
         
-        # Process and display results
-        st.write(f"Total messages: {len(messages)}")
-        st.write("Here are the first few messages:")
-        st.write(messages[:5])
+        # Extract dates
+        dates = re.findall(pattern, data)
         
-        # Process and display results
-        st.write(f"Total messages: {len(messages)}")
-        st.write("Here are the first few messages:")
-        st.write(messages[:5])
-        dates=re.findall(pattern, data)
-        dates
-         
-         df=pd.DataFrame({'user_message':messages,'message_date':dates})
-         
-         #convert message_date type
-         # Strip trailing spaces from message_date and convert to datetime
-         df['message_date'] = df['message_date'].str.strip()
-         df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M -')
-         df.rename(columns={'message_date':'date'}, inplace=True)
-         
-         users=[]
-         messages=[]
-         for message in df['user_message']:
-             entry=re.split(r'([\w\W]+?):\s', message)
-             if entry[1:]:
-                 users.append(entry[1])
-                 messages.append(entry[2])
-             else:
-                 users.append('group_notification')
-                 messages.append(entry[0])
-         
-         df['user']=users
-         df['message']=messages
-         df.drop(columns=['user_message'], inplace=True)
-         
-         df['only_date']=df['date'].dt.date
-         df['year']=df['date'].dt.year
-         df['month_num']=df['date'].dt.month
-         df['month']=df['date'].dt.month_name()
-         df['day']=df['date'].dt.day
-         df['day_name']=df['date'].dt.day_name()
-         df['hour']=df['date'].dt.hour
-         df['minute']=df['date'].dt.minute
-         df['second']=df['date'].dt.second
-
-    
-         period=[]
-         for hour in df[['day_name', 'hour']] ['hour']:
-            if hour == 23:
-              period.append(str(hour) + "-" + str('00'))
-            elif hour == 0 :
-              period.append(str('00') + "-" + str(hour + 1))
+        # Create DataFrame with user messages and dates
+        df = pd.DataFrame({'user_message': messages, 'message_date': dates})
+        
+        # Convert message_date type
+        df['message_date'] = df['message_date'].str.strip()
+        df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M -')
+        df.rename(columns={'message_date': 'date'}, inplace=True)
+        
+        # Extract users and message content
+        users = []
+        messages = []
+        for message in df['user_message']:
+            entry = re.split(r'([\w\W]+?):\s', message)
+            if entry[1:]:
+                users.append(entry[1])
+                messages.append(entry[2])
             else:
-              period.append(str(hour) + "-" + str(hour + 1))
+                users.append('group_notification')
+                messages.append(entry[0])
+        
+        df['user'] = users
+        df['message'] = messages
+        df.drop(columns=['user_message'], inplace=True)
 
-         df['period'] = period
+        # Add date-related columns
+        df['only_date'] = df['date'].dt.date
+        df['year'] = df['date'].dt.year
+        df['month_num'] = df['date'].dt.month
+        df['month'] = df['date'].dt.month_name()
+        df['day'] = df['date'].dt.day
+        df['day_name'] = df['date'].dt.day_name()
+        df['hour'] = df['date'].dt.hour
+        df['minute'] = df['date'].dt.minute
+        df['second'] = df['date'].dt.second
 
-         return df
+        # Calculate period (hour range)
+        period = []
+        for hour in df['hour']:
+            if hour == 23:
+                period.append(f"{hour}-{00}")
+            elif hour == 0:
+                period.append(f"{00}-{hour + 1}")
+            else:
+                period.append(f"{hour}-{hour + 1}")
+
+        df['period'] = period
+
+        # Return the DataFrame
+        return df
+
+
 # Run the preprocessing function
-preprocess()
+df = preprocess()
+
+# Display the dataframe in the Streamlit app
+if df is not None:
+    st.write("Processed Data:")
+    st.write(df.head())
