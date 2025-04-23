@@ -4,9 +4,9 @@ import streamlit as st
 
 uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
 
-    if uploaded_file is not None:
-        # Read the content of the uploaded file
-        data = uploaded_file.read().decode("utf-8")
+if uploaded_file is not None:
+    # Read the content of the uploaded file
+    data = uploaded_file.read().decode("utf-8")
 def preprocess(data):
     # Allow the user to upload a WhatsApp chat file
     
