@@ -14,17 +14,16 @@ st.set_page_config(page_title="WhatsApp Chat Analyzer", layout="wide")
 def listen_to_user():
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        st.info("🎙️ Listening... Speak your question.")
+        st.info("🎤 Listening...")
         audio = recognizer.listen(source)
         try:
             query = recognizer.recognize_google(audio)
-            st.success(f"🗨️ You said: {query}")
+            st.success(f"🗣️ You said: {query}")
             return query.lower()
         except sr.UnknownValueError:
-            st.error("Sorry, I couldn't understand. Try again.")
+            st.error("Sorry, I didn’t catch that.")
         except sr.RequestError:
-            st.error("API unavailable or quota exceeded.")
-
+            st.error("API error or no internet.")
 def handle_voice_query(query, df):
     if "most active" in query and "weekend" in query:
         df_weekend = df[df['day_name'].isin(['Saturday', 'Sunday'])]
