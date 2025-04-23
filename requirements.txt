@@ -5,3 +5,4 @@ seaborn
 emoji
 speechrecognition
 sounddevice
+pyaudio
