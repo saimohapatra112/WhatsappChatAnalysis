@@ -2,14 +2,14 @@ import pandas as pd
 import re
 import streamlit as st
 
-
-def preprocess(data):
-    # Allow the user to upload a WhatsApp chat file
-    uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
+uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
 
     if uploaded_file is not None:
         # Read the content of the uploaded file
         data = uploaded_file.read().decode("utf-8")
+def preprocess(data):
+    # Allow the user to upload a WhatsApp chat file
+    
 
         # Apply the same regex processing
         pattern = r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
