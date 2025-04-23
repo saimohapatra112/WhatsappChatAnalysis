@@ -1,17 +1,24 @@
 import pandas as pd
 import re
 import streamlit as st
-def preprocess(data):
-# Allow the user to upload a WhatsApp chat file
-        uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
+
+
+def preprocess():
+    # Allow the user to upload a WhatsApp chat file
+    uploaded_file = st.file_uploader("Upload your WhatsApp chat file", type=["txt"])
     
-        if uploaded_file is not None:
+    if uploaded_file is not None:
         # Read the content of the uploaded file
-            data = uploaded_file.read().decode("utf-8")
+        data = uploaded_file.read().decode("utf-8")
         
         # Apply the same regex processing
         pattern = r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
         messages = re.split(pattern, data)[1:]
+        
+        # Process and display results
+        st.write(f"Total messages: {len(messages)}")
+        st.write("Here are the first few messages:")
+        st.write(messages[:5])
         
         # Process and display results
         st.write(f"Total messages: {len(messages)}")
@@ -66,3 +73,5 @@ def preprocess(data):
          df['period'] = period
 
          return df
+# Run the preprocessing function
+preprocess()
