@@ -70,7 +70,7 @@ def preprocess(data):
 
 
 # Run the preprocessing function
-df = preprocess()
+df = preprocess(data)
 
 # Display the dataframe in the Streamlit app
 if df is not None:
