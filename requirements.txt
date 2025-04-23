@@ -8,7 +8,6 @@ SpeechRecognition
 pyttsx3
 wordcloud
 emoji
-sounddevice
 scipy
 URLextract
-pyaudio==0.2.11
+pyaudio
