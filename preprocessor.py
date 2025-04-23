@@ -69,8 +69,6 @@ def preprocess(data):
         return df
 
 
-# Run the preprocessing function
-df = preprocess(data)
 
 # Display the dataframe in the Streamlit app
 if df is not None:
