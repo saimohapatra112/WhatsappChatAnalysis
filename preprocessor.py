@@ -7,7 +7,7 @@ def preprocess(data):
     
         if uploaded_file is not None:
         # Read the content of the uploaded file
-        data = uploaded_file.read().decode("utf-8")
+           data = uploaded_file.read().decode("utf-8")
         
         # Apply the same regex processing
         pattern = r'\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
